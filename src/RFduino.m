@@ -133,9 +133,16 @@ static void incrementUuid16(CBUUID *uuid, unsigned char amount)
     NSLog(@"didDiscoverServices");
     
     for (CBService *service in peripheral.services) {
-        if ([service.UUID isEqual:service_uuid])
+        CBUUID *tservice_uuid = [CBUUID UUIDWithString:(customUUID ? customUUID : @"2220")];
+        if ([service.UUID isEqual:tservice_uuid])
         {
-            NSArray *characteristics = [NSArray arrayWithObjects:receive_uuid, send_uuid, disconnect_uuid, nil];
+            
+            CBUUID *treceive_uuid = [CBUUID UUIDWithString:(customUUID ? customUUID : @"2221")];
+            CBUUID *tsend_uuid = [CBUUID UUIDWithString:(customUUID ? customUUID : @"2222")];
+            CBUUID *tdisconnect_uuid = [CBUUID UUIDWithString:(customUUID ? customUUID : @"2223")];
+            
+            
+            NSArray *characteristics = [NSArray arrayWithObjects:treceive_uuid, tsend_uuid, tdisconnect_uuid, nil];
             [peripheral discoverCharacteristics:characteristics forService:service];
         }
     }
@@ -145,13 +152,19 @@ static void incrementUuid16(CBUUID *uuid, unsigned char amount)
 {
     NSLog(@"didDiscoverCharacteristicsForService");
     for (CBService *service in peripheral.services) {
-        if ([service.UUID isEqual:service_uuid]) {
+        CBUUID *tservice_uuid = [CBUUID UUIDWithString:(customUUID ? customUUID : @"2220")];
+        if ([service.UUID isEqual:tservice_uuid]) {
             for (CBCharacteristic *characteristic in service.characteristics) {
-                if ([characteristic.UUID isEqual:receive_uuid]) {
+                
+                CBUUID *treceive_uuid = [CBUUID UUIDWithString:(customUUID ? customUUID : @"2221")];
+                CBUUID *tsend_uuid = [CBUUID UUIDWithString:(customUUID ? customUUID : @"2222")];
+                CBUUID *tdisconnect_uuid = [CBUUID UUIDWithString:(customUUID ? customUUID : @"2223")];
+                
+                if ([characteristic.UUID isEqual:treceive_uuid]) {
                     [peripheral setNotifyValue:YES forCharacteristic:characteristic];
-                } else if ([characteristic.UUID isEqual:send_uuid]) {
+                } else if ([characteristic.UUID isEqual:tsend_uuid]) {
                     send_characteristic = characteristic;
-                } else if ([characteristic.UUID isEqual:disconnect_uuid]) {
+                } else if ([characteristic.UUID isEqual:tdisconnect_uuid]) {
                     disconnect_characteristic = characteristic;
                 }
             }
@@ -165,7 +178,8 @@ static void incrementUuid16(CBUUID *uuid, unsigned char amount)
 - (void)peripheral:(CBPeripheral *)aPeripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
     NSLog(@"didUpdateValueForCharacteristic");
-    if ([characteristic.UUID isEqual:receive_uuid]) {
+    CBUUID *treceive_uuid = [CBUUID UUIDWithString:(customUUID ? customUUID : @"2221")];
+    if ([characteristic.UUID isEqual:treceive_uuid]) {
         SEL didReceive = @selector(didReceive:);
         if ([delegate respondsToSelector:didReceive]) {
             [delegate didReceive:characteristic.value];

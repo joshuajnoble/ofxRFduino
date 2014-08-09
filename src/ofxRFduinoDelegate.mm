@@ -37,12 +37,12 @@ void ofxRFDStopScan()
 
 void ofxRFDConnectRFduino(RFduino *rfduino)
 {
-    return [[RFduinoManager sharedRFduinoManager] loadedServiceRFduino:rfduino];
+    return [[RFduinoManager sharedRFduinoManager] connectRFduino:rfduino];
 }
 
 void ofxRFDDisconnectRFduino(RFduino *rfduino)
 {
-    return [[RFduinoManager sharedRFduinoManager] loadedServiceRFduino:rfduino];
+    return [[RFduinoManager sharedRFduinoManager] disconnectRFduino:rfduino];
 }
 
 void ofxRFDLoadedServiceRFduino(RFduino *rfduino)
@@ -68,7 +68,8 @@ void ofxRFDSendData(void * delegate, unsigned char* data, int length) {
 
 - (void)didReceive:(NSData *)data
 {
-    const char *cString = [data UTF8String];
+    NSString* newStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    const char *cString = [newStr UTF8String];
     application->receivedData(cString);
 }
 
