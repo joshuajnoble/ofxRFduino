@@ -20,4 +20,6 @@ void ofxRFDLoadedServiceRFduino(RFduino *rfduino);
 
 void ofxRFDSendData(void * delegate, unsigned char *data, int length);
 
+std::string ofxRFDGetName( RFduino *rfduino);
+
 #endif

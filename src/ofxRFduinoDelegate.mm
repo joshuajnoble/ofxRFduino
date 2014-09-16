@@ -55,6 +55,13 @@ void ofxRFDSendData(void * delegate, unsigned char* data, int length) {
     return [(id) delegate sendData:nsdata];
 }
 
+std::string ofxRFDGetName( RFduino *rfduino)
+{
+    std::string name([rfduino.name UTF8String]);
+    return name;
+}
+
+
 - (void)setApplication:(ofxRFduinoApp *)app
 {
     application = app;

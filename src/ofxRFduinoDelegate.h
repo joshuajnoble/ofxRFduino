@@ -12,6 +12,7 @@
 #import "RFduinoManagerDelegate.h"
 #import "RFduinoManager.h"
 #import "ofxRFduinoApp.h"
+#import <string>
 
 @class RFduinoManager;
 @class RFduino;
